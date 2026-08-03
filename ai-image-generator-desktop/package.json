@@ -1,0 +1,54 @@
+{
+  "name": "ai-image-generator-desktop",
+  "productName": "AI Image Generator",
+  "version": "1.0.0",
+  "description": "Generate AI images locally using OpenAI DALL-E 3. No server required.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "dist": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.aiimagegenerator.desktop",
+    "productName": "AI Image Generator",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "database.js",
+      "src/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "publisherName": "AI Image Generator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AI Image Generator"
+    },
+    "portable": {
+      "artifactName": "AI-Image-Generator-Portable.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.0"
+  }
+}
