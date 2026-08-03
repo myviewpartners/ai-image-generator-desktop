@@ -1,0 +1,46 @@
+name: Build Windows App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+      
+    - name: Configure node-gyp
+      run: |
+        npm config set msvs_version 2022
+        npm config set python python3
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Build application
+      run: npm run dist
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload Installer
+      uses: actions/upload-artifact@v4
+      with:
+        name: AI-Image-Generator-Installer
+        path: dist/*Setup*.exe
+        
+    - name: Upload Portable
+      uses: actions/upload-artifact@v4
+      with:
+        name: AI-Image-Generator-Portable
+        path: dist/*Portable*.exe
